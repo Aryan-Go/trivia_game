@@ -1,0 +1,31 @@
+.question-box{
+    border: white solid 0.1rem;
+    background-color: white;
+    color: rgb(243, 113, 135);
+    border-radius: 2rem;
+    width:50vw;
+    height:max-content;
+    padding: 1rem;
+    font-size:3rem;
+}
+
+.option-box{
+    border: white solid 0.1rem;
+    background-color: white;
+    color: rgb(243, 113, 135);
+    border-radius: 2rem;
+    width:20vw;
+    height:max-content;
+    padding: 0.3rem;
+    margin-top:1rem;
+    margin-bottom:1rem;
+    font-size:2rem;
+}
+form>input{
+    color: rgb(255, 196, 206);
+    font-size:2rem;
+    padding:0;
+    margin:0;
+    width:2rem;
+
+}
