@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeaderBoard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="/stylesheets/question.css">
+</head>
+<body>
+    <nav class="navbar" style="background-color: #e3f2fd;" data-bs-theme="light">
+        <div class="container-fluid">
+            <img src="/images/logo.png" class="w-[15rem]" alt="logo">
+            <span class="navbar-text">
+                  <a class="navbar-brand text-black" href="/">Home</a>
+                  <a class="navbar-brand text-black" href="/leader">LeaderBoard</a>
+                  <a class="navbar-brand text-black" href="/question">Question</a>
+              </span>
+            </div>
+          </div>
+      </nav>
+      <div class="h-[100vh] bg-[url(/images/leaderborad_back.jpg)] bg-no-repeat bg-size-[length:100vw_100vh] flex flex-col items-center bg-center ">
+            <table class="w-[100vw] text-center m-[2rem] p-[2rem] bg-transparent table-hover table-borderless background-blur-md">
+                <thead>
+                  <tr>
+                    <th class="text-[3rem]" scope="col">Rank</th>
+                    <th class="text-[3rem]" scope="col">Username</th>
+                    <th class="text-[3rem]" scope="col">Email</th>
+                    <th class="text-[3rem]" scope="col">Score</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <% data.forEach((datarow,index) => { %>
+                        <tr>
+                          <th class="text-[1.5rem]" scope="row"><%= index+1 %></th>
+                          <td class="text-[1.5rem]" scope="row"><%= datarow.username %></td>
+                          <td class="text-[1.5rem]" scope="row"><%= datarow.email %></td>
+                          <td class="text-[1.5rem]" scope="row"><%= datarow.score %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+              </table>
+        </table>
+      </div>
+</body>
+</html>

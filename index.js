@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-import { insert_data, get_data,get_score,update_score } from "./database/database.js";
+import { insert_data, get_data,get_score,update_score,get_leader_board } from "./database/database.js";
 
 app.get("/", (req, res) => {
     res.render("home.ejs");
@@ -104,8 +104,9 @@ app.post("/login_add", async (req, res) => {
     }
 });
 
-app.get("/leader", (req, res) => {
-    res.send("This is the leader page");
+app.get("/leader", async(req, res) => {
+    const data = await get_leader_board();
+    res.render("leaderborad.ejs" , {data});
 })
 
 app.get("/question", async(req, res) => {
@@ -144,7 +145,7 @@ app.post("/ans_check", async (req, res) => {
             const new_score = score + 10;
             await update_score(email, new_score);
             console.log(new_score);
-            res.send(req.body);
+            res.redirect("/leader");
         }
         catch (err) {
             console.log(err);
@@ -155,7 +156,7 @@ app.post("/ans_check", async (req, res) => {
         }
     }
     else {
-        res.send(req.body);
+        res.redirect("/leader");
         console.log("This is not correct");
     }
 })
