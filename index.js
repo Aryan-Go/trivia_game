@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-import { insert_data, get_data } from "./database/database.js";
+import { insert_data, get_data,get_score,update_score } from "./database/database.js";
 
 app.get("/", (req, res) => {
     res.render("home.ejs");
@@ -42,16 +42,8 @@ app.get("/login", (req, res) => {
 app.post("/signup_add", async (req, res) => {
     try {
         const encrypted_password = await bcrypt.hash(req.body.password, 12);
-        const payload = {
-            username: req.body.username,
-            email: req.body.email,
-            score: 0,
-            password: encrypted_password
-        }
+        
         await insert_data(req.body.email, req.body.username, encrypted_password, 0);
-        const token = await jwt.sign(payload, secret, { expiresIn: 2 * 60 * 60 });
-        console.log(token);
-        res.cookie("token", token);
         res.redirect("/login")
     } catch (error) {
         res.json({
@@ -72,6 +64,16 @@ app.post("/login_add", async (req, res) => {
         const password_check = data[0].password;
         const password_check_string = password_check.toString();
         // console.log(payload);
+        const payload = {
+          email: req.body.email,
+          score: 0,
+          password: password_check_string,
+        };
+        const token = await jwt.sign(payload, secret, {
+          expiresIn: 2 * 60 * 60,
+        });
+        console.log(token);
+        res.cookie("token", token);
         console.log(password);
         if (data[0].email == email) {
             if (
@@ -127,14 +129,30 @@ app.get("/question", async(req, res) => {
         res.status(500).send("Error fetching trivia");
     }
 })
-app.post("/ans_check", (req, res) => {
+app.post("/ans_check", async (req, res) => {
     const req_ans = req.body.req_ans;
     const lower_req_ans = req_ans.toLowerCase();
     const given_ans = req.body.option;
     const lower_given_ans = given_ans.toLowerCase();
     if (lower_given_ans == lower_req_ans) {
-        res.send(req.body);
-        console.log("It is correct");
+        try {
+            const token = req.cookies.token;
+            const payload = jwt.verify(token, secret);
+            const email = payload.email;
+            const data = await get_score(email);
+            const score = data[0].score;
+            const new_score = score + 10;
+            await update_score(email, new_score);
+            console.log(new_score);
+            res.send(req.body);
+        }
+        catch (err) {
+            console.log(err);
+            res.json({
+                success: false,
+                message: "Your JWT token has expired please login again"
+            })
+        }
     }
     else {
         res.send(req.body);
