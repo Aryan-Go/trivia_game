@@ -5,5 +5,10 @@ CREATE TABLE user(
 	username VARCHAR(100) NOT NULL,
 	password VARCHAR(400) NOT NULL,
 	email VARCHAR(200) NOT NULL,
-    score INT
+    score INT,
+    questions_answered INT,
+    correct INT,
+    incorrect INT
 );
+SELECT * FROM user;
+DROP TABLE user;

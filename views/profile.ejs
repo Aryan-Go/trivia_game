@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
+</head>
+<body class="bg-black">
+    <nav class="navbar" style="background-color: #e3f2fd;" data-bs-theme="light">
+        <div class="container-fluid">
+            <img src="/images/logo.png" class="w-[15rem]" alt="logo">
+            <span class="navbar-text">
+                  <a class="navbar-brand text-black" href="/">Home</a>
+                  <a class="navbar-brand text-black" href="/leader">LeaderBoard</a>
+                  <a class="navbar-brand text-black" href="/question">Question</a>
+                  <a class="navbar-brand text-black" href="/profile">Profile</a>
+              </span>
+            </div>
+          </div>
+      </nav>
+      <div class="h-[100vh] flex flex-row justify-around ">
+        <div class="w-[40vw] flex flex-row justify-start items-center">
+            <img src="/images/profile_image.png" alt="profile_image" class="w-[100%] h-[80%] rounded-[10rem] mx-[5rem] brightness-50">
+        </div>
+        <div class="w-[50vw] mx-[10rem] flex flex-col justify-center items-center">
+            <div class="container">
+                <div class="info-box">
+                    <h5>Your name</h5>
+                    <h3><%= data[0].username %></h3>
+                </div>
+                <div class="info-box">
+                    <h5>Your email</h5>
+                    <h3 class="email"><%= data[0].email %></h3>
+                </div>
+            </div>
+            <div class="container">
+                <div class="info-box">
+                    <h5>Your questions answered</h5>
+                    <h3><%= data[0].questions_answered %></h3>
+                </div>
+                <div class="info-box">
+                    <h5>Your correct questions</h5>
+                    <h3><%= data[0].correct %></h3>
+                </div>
+            </div>
+            <div class="container">
+                <div class="info-box">
+                    <h5>Your incorrect questions</h5>
+                    <h3><%= data[0].incorrect %></h3>
+                </div>
+                <div class="info-box">
+                    <h5>Your score</h5>
+                    <h3><%= data[0].score %></h3>
+                </div>
+            </div>
+        </div>
+      </div>
+</body>
+</html>

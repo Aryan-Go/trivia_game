@@ -43,9 +43,11 @@ app.post("/signup_add", async (req, res) => {
     try {
         const encrypted_password = await bcrypt.hash(req.body.password, 12);
         
-        await insert_data(req.body.email, req.body.username, encrypted_password, 0);
+        await insert_data(req.body.email, req.body.username, encrypted_password, 0,0,0,0);
         res.redirect("/login")
     } catch (error) {
+        console.log(error);
+        
         res.json({
             success: false,
             message: "There is some error in signing up right now",
@@ -142,8 +144,13 @@ app.post("/ans_check", async (req, res) => {
             const email = payload.email;
             const data = await get_score(email);
             const score = data[0].score;
+            let question_answered = data[0].questions_answered;
+            let correct = data[0].correct;
+            let incorrect = data[0].incorrect;
+            question_answered++;
+            correct++;
             const new_score = score + 10;
-            await update_score(email, new_score);
+            await update_score(email, new_score , question_answered,correct,incorrect);
             console.log(new_score);
             res.redirect("/leader");
         }
@@ -156,9 +163,30 @@ app.post("/ans_check", async (req, res) => {
         }
     }
     else {
+        const token = req.cookies.token;
+        const payload = jwt.verify(token, secret);
+        const email = payload.email;
+        const data = await get_score(email);
+        const score = data[0].score;
+        let question_answered = data[0].questions_answered;
+        let incorrect = data[0].incorrect;
+        let correct = data[0].correct;
+        question_answered++;
+        incorrect++;
+        await update_score(email, score , question_answered,correct,incorrect);
         res.redirect("/leader");
         console.log("This is not correct");
     }
+})
+
+app.get("/profile", async(req, res) => {
+    const token = req.cookies.token;
+    const payload = await jwt.verify(token, secret);
+    const email = payload.email;
+    const data = await get_data(email);
+    const data2 = await get_leader_board();
+    // const rank = 
+    res.render("profile.ejs", { data });
 })
 
 app.listen(PORT, (err) => {
