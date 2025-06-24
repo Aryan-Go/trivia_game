@@ -19,7 +19,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const PORT = process.env.PORT;
 const api_key = process.env.api_key;
-const url = process.env.url;
+const url_link = process.env.url_link;
 const secret = process.env.secret
 
 import { fileURLToPath } from "url";
@@ -52,7 +52,7 @@ cron.schedule("* * * * *",
     async () =>
                 {
                     console.log("I am in the cron task");
-                    const res = await axios.get(url, {
+                    const res = await axios.get(url_link, {
                         headers: { "X-Api-Key": api_key },
                     });
                     res3 = res;
