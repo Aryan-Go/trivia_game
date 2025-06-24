@@ -137,6 +137,7 @@ app.post("/ans_check", async (req, res) => {
     const lower_req_ans = req_ans.toLowerCase();
     const given_ans = req.body.option;
     const lower_given_ans = given_ans.toLowerCase();
+    const question = req.body.question;
     if (lower_given_ans == lower_req_ans) {
         try {
             const token = req.cookies.token;
@@ -152,7 +153,7 @@ app.post("/ans_check", async (req, res) => {
             const new_score = score + 10;
             await update_score(email, new_score , question_answered,correct,incorrect);
             console.log(new_score);
-            res.redirect("/leader");
+            res.render("correct.ejs", { req_ans, given_ans, question });
         }
         catch (err) {
             console.log(err);
@@ -174,7 +175,7 @@ app.post("/ans_check", async (req, res) => {
         question_answered++;
         incorrect++;
         await update_score(email, score , question_answered,correct,incorrect);
-        res.redirect("/leader");
+        res.render("answer.ejs" , {req_ans,given_ans,question});
         console.log("This is not correct");
     }
 })

@@ -29,3 +29,24 @@ form>input{
     width:2rem;
 
 }
+
+.answer-box{
+    border: white solid 0.1rem;
+    background-color: white;
+    /* color: rgb(243, 113, 135); */
+    border-radius: 2rem;
+    width:50vw;
+    height:max-content;
+    padding: 1rem;
+    font-size:3rem;
+}
+
+.color{
+    color:#f4000c;
+    text-shadow: white 0rem 0rem 0.3rem;
+}
+
+.color2{
+    color:#00C851;
+    text-shadow: white 0rem 0rem 0.3rem;
+}

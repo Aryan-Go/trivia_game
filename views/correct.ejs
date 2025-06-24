@@ -25,16 +25,17 @@
           </div>
       </nav>
       <div class="h-14 bg-linear-65 from-purple-500 to-pink-500 w-[100vw] h-[100vh] flex flex-col items-center text-left text-white">
-        <h1 class="text-center">Lets solve the question</h1>
+        <h1 class="text-center color2">Your answer is Correct</h1>
         <div class="flex flex-col items-center text-center justify-center text-white my-[6rem]">
             <div class="question-box"><%= question %></div>
-            <div class="flex flex-row w-[50vw] justify-around w-[100%]">
-                <form class="w-[100%]" action="ans_check" method="post">
-                    <input type="hidden" name="req_ans" value="<%= answer %>">
-                    <input type="hidden" name="question" value="<%= question %>">
-                    <input class="option-box text-center" type="text" name="option" required><br>
-                    <button type="submit"class="option-box">Submit</button>
-                </form>
+            <div class="flex flex-col w-[50vw] justify-around w-[100%]">
+                <div class="answer-box text-green-500 my-[2rem]">
+                    <p>Your answer = <%= given_ans %></p>
+                </div><br>
+                <div class="answer-box text-green-500">
+                    <p>Correct answer = <%= req_ans %></p>
+                </div>
+                <div></div>
             </div>
         </div>
     </div>
