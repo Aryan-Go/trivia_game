@@ -4,6 +4,12 @@ const app = express();
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+import cron from "node-cron";
+// const task = () => {
+//     console.log("I am running every second");
+// }
+// cron.schedule("* * * * *", task);
+
 import cookie_parser from "cookie-parser";
 app.use(cookie_parser());
 
@@ -27,7 +33,34 @@ app.set("view engine", "ejs");
 
 import { insert_data, get_data,get_score,update_score,get_leader_board } from "./database/database.js";
 
-app.get("/", (req, res) => {
+const auth_checker = async (req, res, next) => {
+    const token = req.cookies.token;
+    if (token != null && token != undefined) {
+        next();
+    }
+    else {
+        res.json({
+            success: false,
+            message: "The person is not logged in or signed in please check once"
+        });
+    }
+}
+
+let res3;
+let question_attempted = false;
+cron.schedule("* * * * *",
+    async () =>
+                {
+                    console.log("I am in the cron task");
+                    const res = await axios.get(url, {
+                        headers: { "X-Api-Key": api_key },
+                    });
+                    res3 = res;
+                    console.log(res);
+                    question_attempted = false;
+                });
+
+app.get("/", auth_checker ,(req, res) => {
     res.render("home.ejs");
 })
 
@@ -106,30 +139,41 @@ app.post("/login_add", async (req, res) => {
     }
 });
 
-app.get("/leader", async(req, res) => {
+app.get("/leader",auth_checker, async(req, res) => {
     const data = await get_leader_board();
     res.render("leaderborad.ejs" , {data});
 })
 
-app.get("/question", async(req, res) => {
+
+app.get("/question",auth_checker, async(req, res) => {
     try {
         // console.log(api_key);
         // axios.defaults.headers["X-Api-Key"] = api_key;
-        const res2 = await axios.get(url, {
-            headers: { "X-Api-Key": api_key }
-        });
-        // console.log("Response full:", res2);
-        console.log("Status:", res2.status);
-        console.log("Headers:", res2.headers);
-        console.log("Data:", res2.data);
-        const question = res2.data[0].question;
-        const answer = res2.data[0].answer;
-        console.log(question);
-        console.log(answer);
-        res.render("question.ejs", { question,answer });
+        if (!question_attempted) {
+            console.log("Response full:", res3);
+            console.log("Status:", res3.status);
+            console.log("Headers:", res3.headers);
+            console.log("Data:", res3.data);
+            const question = res3.data[0].question;
+            const answer = res3.data[0].answer;
+            console.log(question);
+            console.log(answer);
+            res.render("question.ejs", { question, answer });
+            question_attempted = true;
+        }
+        else {
+            res.json({
+                success: false,
+                message: "You have already attempted the question please wait for 6hrs for a new question"
+            })
+        }
     } catch (error) {
         console.error("API Error:", error.response?.data || error.message);
-        res.status(500).send("Error fetching trivia");
+        res.status(500).json(
+            {
+                success: false,
+                message: "Error fetching trivia"
+            });
     }
 })
 app.post("/ans_check", async (req, res) => {
@@ -180,7 +224,7 @@ app.post("/ans_check", async (req, res) => {
     }
 })
 
-app.get("/profile", async(req, res) => {
+app.get("/profile",auth_checker, async(req, res) => {
     const token = req.cookies.token;
     const payload = await jwt.verify(token, secret);
     const email = payload.email;
