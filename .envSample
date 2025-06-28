@@ -1,6 +1,6 @@
 PORT=3000
 api_key=
-url="https://api.api-ninjas.com/v1/trivia?category="
+url_link="https://api.api-ninjas.com/v1/trivia?category="
 secret=
 localhost=127.0.0.1
 password=

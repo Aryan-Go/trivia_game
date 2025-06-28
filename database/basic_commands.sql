@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS trivia;
 CREATE DATABASE trivia;
 USE trivia;
 CREATE TABLE user(
@@ -11,4 +12,3 @@ CREATE TABLE user(
     incorrect INT
 );
 SELECT * FROM user;
-DROP TABLE user;
